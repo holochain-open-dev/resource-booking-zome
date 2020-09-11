@@ -20,10 +20,6 @@ impl BookableResource for MeetingRoom {
     }
 }
 
-fn all_meetings_anchor_address() -> ExternResult<EntryHash> {
-    anchor("meeting_rooms".into(), "".into())
-}
-
 pub fn create_meeting_room(name: String, description: String) -> ExternResult<EntryHash> {
     let agent_info = agent_info!()?;
 
@@ -54,4 +50,11 @@ pub fn get_all_meeting_rooms() -> ExternResult<Vec<MeetingRoom>> {
         .iter()
         .map(|link| utils::try_get_and_convert::<MeetingRoom>(link.target.clone()))
         .collect::<ExternResult<Vec<MeetingRoom>>>()
+}
+
+
+/** Private helpers **/
+
+fn all_meetings_anchor_address() -> ExternResult<EntryHash> {
+    anchor("meeting_rooms".into(), "".into())
 }

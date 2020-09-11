@@ -10,7 +10,7 @@ pub fn error<T>(reason: &str) -> ExternResult<T> {
     Err(HdkError::Wasm(WasmError::Zome(String::from(reason))))
 }
 
-entry_defs![MeetingRoom::entry_def()];
+entry_defs![MeetingRoom::entry_def(), Path::entry_def()];
 
 #[derive(Clone, Serialize, Deserialize, SerializedBytes)]
 pub struct CreateMeetingRoomInput {

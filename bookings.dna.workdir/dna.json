@@ -5,6 +5,9 @@
   "zomes": {
     "bookings": {
       "wasm_path": "../target/wasm32-unknown-unknown/release/bookings.wasm"
+    },
+    "resources": {
+      "wasm_path": "../target/wasm32-unknown-unknown/release/resources.wasm"
     }
   }
 }

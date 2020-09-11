@@ -1,65 +1,99 @@
 import { Orchestrator, Config } from "@holochain/tryorama";
-import { cond } from "lodash";
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(() => resolve(), ms));
 
 const orchestrator = new Orchestrator();
 
 export const simpleConfig = {
-  alice: Config.dna("../multiplecalls.dna.gz", null),
-  bobbo: Config.dna("../multiplecalls.dna.gz", null),
+  alice: Config.dna("../bookings.dna.gz", null),
+  bobbo: Config.dna("../bookings.dna.gz", null),
 };
 
-/* 
-orchestrator.registerScenario("multiple gets", async (s, t) => {
+orchestrator.registerScenario("create and get a meeting room", async (s, t) => {
   const { conductor } = await s.players({
     conductor: Config.gen(simpleConfig),
   });
   await conductor.spawn();
 
-  let hash = await conductor.call('alice', "multiplecalls", "create_entry", 'hello world');
-  let result = await conductor.call('alice', 'multiplecalls', 'get_entry_multiple', [hash, 15]);
-  t.equal(result, 'hello world');
-
-  hash = await conductor.call('alice', "multiplecalls", "create_entry", 'hello world');
-  result = await conductor.call('alice', 'multiplecalls', 'get_entry_multiple', [hash, 130]);
-  t.equal(result, 'hello world');
-});
-
-orchestrator.registerScenario("multiple commits", async (s, t) => {
-  const { conductor } = await s.players({
-    conductor: Config.gen(simpleConfig),
+  let hash = await conductor.call("alice", "resources", "create_meeting_room", {
+    name: "Meeting room 1",
+    description: "Some description",
   });
-  await conductor.spawn();
-
-  await conductor.call('alice', "multiplecalls", "create_entry_multiple", ['hello world', 1]);
-  t.ok(true, true);
-
-  await conductor.call('alice', "multiplecalls", "create_entry_multiple", ['hello world', 140]);
-  t.ok(true, true);
-}); */
-
-async function commitEntry(t, conductor, playerName, char) {
-  const entry = `${char}`;
-  const hash = await conductor.call(playerName, "multiplecalls", "create_entry", entry);
+  console.log('hi', hash)
   t.ok(hash);
 
-  const result = await conductor.call(playerName, 'multiplecalls', 'get_entry_multiple', [hash, 1]);
-  t.ok(result);
-}
+  await sleep(100);
+  let meetingRooms = await conductor.call(
+    "alice",
+    "resources",
+    "get_all_meeting_rooms",
+    null
+  );
 
-orchestrator.registerScenario("many commits", async (s, t) => {
+  t.equal(meetingRooms.length, 0);
+});
+
+const dateToTimestamp = (date) => [
+  Math.floor(date / 1000),
+  (date % 1000) * 1000,
+];
+
+orchestrator.registerScenario("create and get a meeting room", async (s, t) => {
   const { conductor } = await s.players({
     conductor: Config.gen(simpleConfig),
   });
   await conductor.spawn();
 
-  const NUMBER_OF_ENTRIES_TO_COMMIT = 300;
-  for (let i = 0; i < NUMBER_OF_ENTRIES_TO_COMMIT; i++) {
-    await commitEntry(t, conductor, 'alice', String.fromCharCode('a'.charCodeAt(0) + i));
-  }
+  let meetingRoomHash = await conductor.call(
+    "alice",
+    "resources",
+    "create_meeting_room",
+    {
+      name: "Meeting room 1",
+      description: "Some description",
+    }
+  );
+  t.ok(meetingRoomHash);
 
-  const stateDump = await conductor.stateDump('alice');
+  const startTime = dateToTimestamp(Date.now());
+  const endTime = dateToTimestamp(Date.now() + 1000 * 60 * 60 * 2);
 
-  t.equal(stateDump.length - 4, NUMBER_OF_ENTRIES_TO_COMMIT)
+  let requestHash = await conductor.call(
+    "alice",
+    "bookings",
+    "request_to_book_resource",
+    {
+      resource_hash: meetingRoomHash,
+      start_time: startTime,
+      end_time: endTime,
+      event_title: "Important meeting",
+    }
+  );
+  t.ok(requestHash);
+
+  let bookingRequests = await conductor.call(
+    "alice",
+    "bookings",
+    "get_booking_requests_for_resource",
+    meetingRoomHash
+  );
+  t.equal(bookingRequests.length, 1);
+
+  let bookingHash = await conductor.call(
+    "alice",
+    "bookings",
+    "accept_booking_request",
+    requestHash
+  );
+  t.ok(bookingHash);
+
+  let bookings = await conductor.call(
+    "alice",
+    "bookings",
+    "get_bookings_for_resource",
+    meetingRoomHash
+  );
+  t.equal(bookings.length, 1);
 });
 
 orchestrator.run();
