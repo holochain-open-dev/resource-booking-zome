@@ -19,18 +19,17 @@ orchestrator.registerScenario("create and get a meeting room", async (s, t) => {
     name: "Meeting room 1",
     description: "Some description",
   });
-  console.log('hi', hash)
   t.ok(hash);
 
   await sleep(100);
   let meetingRooms = await conductor.call(
-    "alice",
+    "bobbo",
     "resources",
     "get_all_meeting_rooms",
     null
   );
-
-  t.equal(meetingRooms.length, 0);
+  console.log(meetingRooms)
+  t.equal(meetingRooms.length, 1);
 });
 
 const dateToTimestamp = (date) => [
