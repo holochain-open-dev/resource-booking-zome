@@ -32,11 +32,11 @@ pub fn request_to_book_resource(
         end_time: request_to_book_resource_input.end_time.clone(),
     };
 
-    commit_entry!(booking_request.clone())?;
+    create_entry!(booking_request.clone())?;
 
-    let booking_request_hash = entry_hash!(booking_request)?;
+    let booking_request_hash = hash_entry!(booking_request)?;
 
-    link_entries!(
+    create_link!(
         request_to_book_resource_input.resource_hash,
         booking_request_hash.clone(),
         utils::link_tag("resource->booking_request")?
@@ -79,7 +79,7 @@ pub fn accept_booking_request(booking_request_hash: EntryHash) -> ExternResult<E
         .map(|link_detail| {
             let header_hash = Element::from(link_detail.0).as_hash();
 
-            remove_link!(header_hash)?;
+            delete_link!(header_hash)?;
 
             Ok(())
         })

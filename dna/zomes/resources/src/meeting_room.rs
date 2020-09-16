@@ -29,13 +29,13 @@ pub fn create_meeting_room(name: String, description: String) -> ExternResult<En
         owner: agent_info.agent_latest_pubkey,
     };
 
-    let meeting_room_hash = entry_hash!(meeting_room.clone())?;
+    let meeting_room_hash = hash_entry!(meeting_room.clone())?;
 
-    commit_entry!(meeting_room.clone())?;
+    create_entry!(meeting_room.clone())?;
 
     let anchor_address = all_meetings_anchor_address()?;
 
-    link_entries!(anchor_address, meeting_room_hash.clone())?;
+    create_link!(anchor_address, meeting_room_hash.clone())?;
 
     Ok(meeting_room_hash)
 }

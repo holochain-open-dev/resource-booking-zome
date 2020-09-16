@@ -20,11 +20,11 @@ pub fn create_booking_for_request(booking_request_hash: EntryHash) -> ExternResu
         created_at: now
     };
 
-    commit_entry!(booking.clone())?;
+    create_entry!(booking.clone())?;
 
-    let booking_hash = entry_hash!(booking.clone())?;
+    let booking_hash = hash_entry!(booking.clone())?;
 
-    link_entries!(
+    create_link!(
         booking_request.resource_hash,
         booking_hash.clone(),
         utils::link_tag("resource->booking")?
