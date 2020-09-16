@@ -16,14 +16,14 @@ cargo build --release --target wasm32-unknown-unknown
 dna-util -c bookings.dna.workdir/
 ```
 
-## Testing
+### Testing
 
 ```bash
 cd dna/tests
 npm test
 ```
 
-## Running
+### Running
 
 First, install [holochain-run-dna](https://www.npmjs.com/package/@holochain-open-dev/holochain-run-dna). Then run:
 
