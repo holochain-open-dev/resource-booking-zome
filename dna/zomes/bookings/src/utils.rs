@@ -8,6 +8,7 @@ pub fn try_get_and_convert<T: TryFrom<SerializedBytes>>(entry_hash: EntryHash) -
 }
 
 pub fn try_from_element<T: TryFrom<SerializedBytes>>(element: Element) -> ExternResult<T> {
+    debug!("asdf {:?}", element)?;
     match element.entry() {
         element::ElementEntry::Present(entry) => try_from_entry::<T>(entry.clone()),
         _ => crate::error("Could not convert element"),

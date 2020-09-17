@@ -1,9 +1,7 @@
 use hdk3::prelude::*;
 
 mod meeting_room;
-mod resource;
 mod utils;
-use resource::BookableResource;
 use meeting_room::MeetingRoom;
 
 pub fn error<T>(reason: &str) -> ExternResult<T> {
@@ -33,7 +31,7 @@ pub fn get_all_meeting_rooms(_: ()) -> ExternResult<GetAllMeetingRoomsOutput> {
 
 #[derive(Clone, Serialize, Deserialize, SerializedBytes)]
 pub struct GetResourceAuthoritiesInput {
-    resource_address: EntryHash,
+    resource_hash: EntryHash,
     timestamp: timestamp::Timestamp,
 }
 #[derive(Clone, Serialize, Deserialize, SerializedBytes)]
@@ -43,7 +41,7 @@ pub fn get_resource_authorities_at_time(
     input: GetResourceAuthoritiesInput,
 ) -> ExternResult<GetResourceAuthoritiesOutput> {
     let authorities =
-        MeetingRoom::get_resource_authorities_at_time(input.resource_address, input.timestamp)?;
+        meeting_room::get_resource_authorities_at_time(input.resource_hash, input.timestamp)?;
 
     Ok(GetResourceAuthoritiesOutput(authorities))
 }

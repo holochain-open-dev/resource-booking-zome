@@ -1,7 +1,7 @@
 [workspace]
 members = [
   "zomes/bookings",
-  "zomes/resources",
+  "zomes/meeting_rooms",
 ]
 
 [profile.dev]

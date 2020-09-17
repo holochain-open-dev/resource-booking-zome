@@ -1,4 +1,3 @@
-use crate::resource::BookableResource;
 use crate::utils;
 use hdk3::prelude::*;
 
@@ -8,16 +7,6 @@ pub struct MeetingRoom {
     name: String,
     description: String,
     owner: AgentPubKey,
-}
-
-impl BookableResource for MeetingRoom {
-    fn get_resource_authorities_at_time(
-        resource_address: EntryHash,
-        _time: timestamp::Timestamp,
-    ) -> ExternResult<Vec<AgentPubKey>> {
-        let meeting_room = utils::try_get_and_convert::<MeetingRoom>(resource_address)?;
-        Ok(vec![meeting_room.owner])
-    }
 }
 
 pub fn create_meeting_room(name: String, description: String) -> ExternResult<EntryHash> {
@@ -52,6 +41,13 @@ pub fn get_all_meeting_rooms() -> ExternResult<Vec<MeetingRoom>> {
         .collect::<ExternResult<Vec<MeetingRoom>>>()
 }
 
+pub fn get_resource_authorities_at_time(
+    resource_hash: EntryHash,
+    _time: timestamp::Timestamp,
+) -> ExternResult<Vec<AgentPubKey>> {
+    let meeting_room = utils::try_get_and_convert::<MeetingRoom>(resource_hash)?;
+    Ok(vec![meeting_room.owner])
+}
 
 /** Private helpers **/
 

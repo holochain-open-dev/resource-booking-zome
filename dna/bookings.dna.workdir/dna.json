@@ -6,7 +6,7 @@
     "bookings": {
       "wasm_path": "../target/wasm32-unknown-unknown/release/bookings.wasm"
     },
-    "resources": {
+    "meeting_rooms": {
       "wasm_path": "../target/wasm32-unknown-unknown/release/resources.wasm"
     }
   }
