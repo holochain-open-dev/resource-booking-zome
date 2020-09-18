@@ -56,3 +56,13 @@ pub fn get_bookings_for_resource(
 
     Ok(GetBookingForResourceOutput(bookings))
 }
+
+#[hdk_extern]
+fn validate_link(
+    validate_link_add_data: ValidateCreateLinkData,
+) -> ExternResult<ValidateCreateLinkCallbackResult> {
+    let _base_entry = validate_link_add_data.base;
+    let _target_entry = validate_link_add_data.target;
+
+    Ok(ValidateCreateLinkCallbackResult::Valid)
+}
