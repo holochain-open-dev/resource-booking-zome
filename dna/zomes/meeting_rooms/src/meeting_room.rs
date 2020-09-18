@@ -4,9 +4,9 @@ use hdk3::prelude::*;
 #[hdk_entry(id = "meeting_room", visibility = "public")]
 #[derive(Clone)]
 pub struct MeetingRoom {
-    name: String,
-    description: String,
-    owner: AgentPubKey,
+    pub name: String,
+    pub description: String,
+    pub owner: AgentPubKey,
 }
 
 pub fn create_meeting_room(name: String, description: String) -> ExternResult<EntryHash> {

@@ -15,6 +15,41 @@ orchestrator.registerScenario("create and get a meeting room", async (s, t) => {
   });
   await conductor.spawn();
 
+  // Commit too big a name for a meeting room
+  try {
+    await conductor.call("alice", "meeting_rooms", "create_meeting_room", {
+      name: "Meeting room 123456789",
+      description: "Some description",
+    });
+    t.ok(false);
+  } catch (e) {
+    console.log(e);
+    t.deepEqual(e, {
+      type: "Error",
+      data: {
+        type: "InternalError",
+        data: "Source chain error: InvalidCommit error: Meeting room name is too big",
+      },
+    });
+  }
+
+  try {
+    await conductor.call("alice", "meeting_rooms", "create_meeting_room", {
+      name: "Meeting room 1",
+      description: Array(512).fill("Some description").join(""),
+    });
+    t.ok(false);
+  } catch (e) {
+    console.log(e);
+    t.deepEqual(e, {
+      type: "Error",
+      data: {
+        type: "InternalError",
+        data: "Source chain error: InvalidCommit error: Too big",
+      },
+    });
+  }
+
   let hash = await conductor.call(
     "alice",
     "meeting_rooms",
@@ -74,7 +109,7 @@ orchestrator.registerScenario("create and get a meeting room", async (s, t) => {
     }
   );
   t.ok(requestHash);
-  
+
   let bookingRequests = await conductor.call(
     "alice",
     "bookings",

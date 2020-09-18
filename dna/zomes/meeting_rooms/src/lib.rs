@@ -45,3 +45,24 @@ pub fn get_resource_authorities_at_time(
 
     Ok(GetResourceAuthoritiesOutput(authorities))
 }
+
+/** Validation **/
+
+#[hdk_extern]
+fn validate(entry: Entry) -> ExternResult<ValidateCallbackResult> {
+    if let Entry::App(entry_bytes) = entry.clone() {
+        if entry_bytes.into_sb().bytes().len() > 1000 {
+            return Ok(ValidateCallbackResult::Invalid("Too big".to_string()));
+        }
+    }
+
+    if let Ok(meeting_room) = MeetingRoom::try_from(entry.clone()) {
+        if meeting_room.name.len() > 20 {
+            return Ok(ValidateCallbackResult::Invalid(
+                "Meeting room name is too big".to_string(),
+            ));
+        }
+    }
+
+    return Ok(ValidateCallbackResult::Valid);
+}
