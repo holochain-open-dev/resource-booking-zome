@@ -16,40 +16,6 @@ orchestrator.registerScenario("create and get a meeting room", async (s, t) => {
   await conductor.spawn();
 
   // Commit too big a name for a meeting room
-  try {
-    await conductor.call("alice", "meeting_rooms", "create_meeting_room", {
-      name: "Meeting room 123456789",
-      description: "Some description",
-    });
-    t.ok(false);
-  } catch (e) {
-    console.log(e);
-    t.deepEqual(e, {
-      type: "Error",
-      data: {
-        type: "InternalError",
-        data: "Source chain error: InvalidCommit error: Meeting room name is too big",
-      },
-    });
-  }
-
-  try {
-    await conductor.call("alice", "meeting_rooms", "create_meeting_room", {
-      name: "Meeting room 1",
-      description: Array(512).fill("Some description").join(""),
-    });
-    t.ok(false);
-  } catch (e) {
-    console.log(e);
-    t.deepEqual(e, {
-      type: "Error",
-      data: {
-        type: "InternalError",
-        data: "Source chain error: InvalidCommit error: Too big",
-      },
-    });
-  }
-
   let hash = await conductor.call(
     "alice",
     "meeting_rooms",
@@ -63,7 +29,7 @@ orchestrator.registerScenario("create and get a meeting room", async (s, t) => {
 
   await sleep(100);
   let meetingRooms = await conductor.call(
-    "bobbo",
+    "alice",
     "meeting_rooms",
     "get_all_meeting_rooms",
     null
@@ -110,6 +76,8 @@ orchestrator.registerScenario("create and get a meeting room", async (s, t) => {
   );
   t.ok(requestHash);
 
+  await sleep(100);
+
   let bookingRequests = await conductor.call(
     "alice",
     "bookings",
@@ -118,7 +86,6 @@ orchestrator.registerScenario("create and get a meeting room", async (s, t) => {
   );
   t.equal(bookingRequests.length, 1);
 
-  /* 
   let bookingHash = await conductor.call(
     "alice",
     "bookings",
@@ -133,7 +100,7 @@ orchestrator.registerScenario("create and get a meeting room", async (s, t) => {
     "get_bookings_for_resource",
     meetingRoomHash
   );
-  t.equal(bookings.length, 1); */
+  t.equal(bookings.length, 1);
 });
 
 orchestrator.run();

@@ -15,7 +15,6 @@ pub struct CreateMeetingRoomInput {
     name: String,
     description: String,
 }
-
 #[hdk_extern]
 pub fn create_meeting_room(input: CreateMeetingRoomInput) -> ExternResult<EntryHash> {
     meeting_room::create_meeting_room(input.name, input.description)
@@ -44,25 +43,4 @@ pub fn get_resource_authorities_at_time(
         meeting_room::get_resource_authorities_at_time(input.resource_hash, input.timestamp)?;
 
     Ok(GetResourceAuthoritiesOutput(authorities))
-}
-
-/** Validation **/
-
-#[hdk_extern]
-fn validate(entry: Entry) -> ExternResult<ValidateCallbackResult> {
-    if let Entry::App(entry_bytes) = entry.clone() {
-        if entry_bytes.into_sb().bytes().len() > 1000 {
-            return Ok(ValidateCallbackResult::Invalid("Too big".to_string()));
-        }
-    }
-
-    if let Ok(meeting_room) = MeetingRoom::try_from(entry.clone()) {
-        if meeting_room.name.len() > 20 {
-            return Ok(ValidateCallbackResult::Invalid(
-                "Meeting room name is too big".to_string(),
-            ));
-        }
-    }
-
-    return Ok(ValidateCallbackResult::Valid);
 }
