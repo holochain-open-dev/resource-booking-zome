@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from '@apollo/client/core';
 import { setupClient } from './client';
 
 setupClient('ws://localhost:8888').then(async client => {

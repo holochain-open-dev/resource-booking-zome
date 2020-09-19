@@ -1,8 +1,8 @@
-import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
+import { gql, InMemoryCache, ApolloClient } from '@apollo/client/core';
 import { SchemaLink } from '@apollo/client/link/schema';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 
-import { AppWebsocket, CellId } from '@holochain/conductor-api';
+import { AppWebsocket } from '@holochain/conductor-api';
 
 import { bookingsTypeDefs } from './bookings/graphql/schema';
 import { calendarEventsResolvers } from './calendar_events/graphql/resolvers';

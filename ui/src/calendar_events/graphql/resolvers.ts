@@ -1,4 +1,4 @@
-import { Resolvers } from '@apollo/client';
+import { Resolvers } from '@apollo/client/core';
 import { AppWebsocket, CellId } from '@holochain/conductor-api';
 
 export const calendarEventsResolvers = (
