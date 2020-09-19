@@ -1,12 +1,12 @@
 [package]
 authors = ["guillem.cordoba@gmail.com"]
 edition = "2018"
-name = "resources"
+name = "calendar_events"
 version = "0.0.1"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
-name = "resources"
+name = "bookings"
 
 [dependencies]
 derive_more = "0"

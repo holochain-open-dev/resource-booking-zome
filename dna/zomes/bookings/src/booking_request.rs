@@ -9,7 +9,6 @@ pub struct BookingRequest {
     pub resource_hash: EntryHash,
     pub start_time: Timestamp,
     pub end_time: Timestamp,
-    pub event_title: Option<String>,
 }
 
 #[derive(Clone, Serialize, Deserialize, SerializedBytes)]
@@ -17,7 +16,6 @@ pub struct RequestToBookResourceInput {
     resource_hash: EntryHash,
     start_time: Timestamp,
     end_time: Timestamp,
-    event_title: Option<String>,
 }
 pub fn request_to_book_resource(
     request_to_book_resource_input: RequestToBookResourceInput,
@@ -27,7 +25,6 @@ pub fn request_to_book_resource(
     let booking_request = BookingRequest {
         requestor_pub_key: agent_info.agent_latest_pubkey,
         resource_hash: request_to_book_resource_input.resource_hash.clone(),
-        event_title: request_to_book_resource_input.event_title.clone(),
         start_time: request_to_book_resource_input.start_time.clone(),
         end_time: request_to_book_resource_input.end_time.clone(),
     };

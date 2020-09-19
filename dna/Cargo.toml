@@ -2,6 +2,7 @@
 members = [
   "zomes/bookings",
   "zomes/meeting_rooms",
+  "zomes/calendar_events",
 ]
 
 [profile.dev]
