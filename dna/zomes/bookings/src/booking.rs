@@ -1,4 +1,4 @@
-use crate::{utils, booking_request::BookingRequest};
+use crate::{booking_request::BookingRequest, utils};
 use hdk3::prelude::timestamp::Timestamp;
 use hdk3::prelude::*;
 
@@ -6,18 +6,19 @@ use hdk3::prelude::*;
 #[derive(Clone)]
 pub struct Booking {
     pub booking_request_hash: EntryHash,
-    pub created_at: Timestamp
+    pub created_at: Timestamp,
 }
 
 pub fn create_booking_for_request(booking_request_hash: EntryHash) -> ExternResult<EntryHash> {
-    let booking_request: BookingRequest = utils::try_get_and_convert(booking_request_hash.clone())?;
+    let booking_request: BookingRequest =
+        utils::try_get_and_convert(booking_request_hash.clone())?.1;
 
     let time = sys_time!()?;
     let now = Timestamp(time.as_secs() as i64, time.subsec_nanos());
 
     let booking = Booking {
         booking_request_hash,
-        created_at: now
+        created_at: now,
     };
 
     create_entry!(booking.clone())?;
@@ -33,7 +34,9 @@ pub fn create_booking_for_request(booking_request_hash: EntryHash) -> ExternResu
     Ok(booking_hash)
 }
 
-pub fn get_bookings_for_resource(resource_hash: EntryHash) -> ExternResult<Vec<Booking>> {
+pub fn get_bookings_for_resource(
+    resource_hash: EntryHash,
+) -> ExternResult<Vec<(EntryHash, Booking)>> {
     let links = get_links!(resource_hash, utils::link_tag("resource->booking")?)?;
 
     links

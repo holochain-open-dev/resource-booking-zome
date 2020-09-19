@@ -44,7 +44,7 @@ pub fn request_to_book_resource(
 
 pub fn get_booking_requests_for_resource(
     resource_hash: EntryHash,
-) -> ExternResult<Vec<BookingRequest>> {
+) -> ExternResult<Vec<(EntryHash, BookingRequest)>> {
     let links = get_links!(resource_hash, utils::link_tag("resource->booking_request")?)?;
 
     links

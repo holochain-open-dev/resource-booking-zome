@@ -22,7 +22,7 @@ pub fn create_calendar_event(
 }
 
 #[derive(Clone, Serialize, Deserialize, SerializedBytes)]
-pub struct GetAllCalendarEventsOutput(Vec<calendar_event::CalendarEvent>);
+pub struct GetAllCalendarEventsOutput(Vec<(EntryHash, calendar_event::CalendarEvent)>);
 #[hdk_extern]
 pub fn get_all_calendar_events(_: ()) -> ExternResult<GetAllCalendarEventsOutput> {
     let calendar_events = calendar_event::get_all_calendar_events()?;

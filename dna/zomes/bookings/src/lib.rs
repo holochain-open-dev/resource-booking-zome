@@ -24,14 +24,14 @@ pub fn request_to_book_resource(
 }
 
 #[derive(Clone, Serialize, Deserialize, SerializedBytes)]
-pub struct GetBookingRequestForResourceOutput(Vec<booking_request::BookingRequest>);
+pub struct GetBookingRequestsForResourceOutput(Vec<(EntryHash, booking_request::BookingRequest)>);
 #[hdk_extern]
 pub fn get_booking_requests_for_resource(
     resource_hash: EntryHash,
-) -> ExternResult<GetBookingRequestForResourceOutput> {
+) -> ExternResult<GetBookingRequestsForResourceOutput> {
     let booking_requests = booking_request::get_booking_requests_for_resource(resource_hash)?;
 
-    Ok(GetBookingRequestForResourceOutput(booking_requests))
+    Ok(GetBookingRequestsForResourceOutput(booking_requests))
 }
 
 #[hdk_extern]
@@ -47,22 +47,12 @@ pub fn create_booking_for_request(booking_request_hash: EntryHash) -> ExternResu
 }
 
 #[derive(Clone, Serialize, Deserialize, SerializedBytes)]
-pub struct GetBookingForResourceOutput(Vec<booking::Booking>);
+pub struct GetBookingsForResourceOutput(Vec<(EntryHash, booking::Booking)>);
 #[hdk_extern]
 pub fn get_bookings_for_resource(
     resource_hash: EntryHash,
-) -> ExternResult<GetBookingForResourceOutput> {
+) -> ExternResult<GetBookingsForResourceOutput> {
     let bookings = booking::get_bookings_for_resource(resource_hash)?;
 
-    Ok(GetBookingForResourceOutput(bookings))
-}
-
-#[hdk_extern]
-fn validate_link(
-    validate_link_add_data: ValidateCreateLinkData,
-) -> ExternResult<ValidateCreateLinkCallbackResult> {
-    let _base_entry = validate_link_add_data.base;
-    let _target_entry = validate_link_add_data.target;
-
-    Ok(ValidateCreateLinkCallbackResult::Valid)
+    Ok(GetBookingsForResourceOutput(bookings))
 }

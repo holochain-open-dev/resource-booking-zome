@@ -29,7 +29,7 @@ pub fn create_meeting_room(name: String, description: String) -> ExternResult<En
     Ok(meeting_room_hash)
 }
 
-pub fn get_all_meeting_rooms() -> ExternResult<Vec<MeetingRoom>> {
+pub fn get_all_meeting_rooms() -> ExternResult<Vec<(EntryHash, MeetingRoom)>> {
     let anchor_address = all_meetings_anchor_address()?;
 
     let links = get_links!(anchor_address)?;
@@ -38,7 +38,7 @@ pub fn get_all_meeting_rooms() -> ExternResult<Vec<MeetingRoom>> {
         .into_inner()
         .iter()
         .map(|link| utils::try_get_and_convert::<MeetingRoom>(link.target.clone()))
-        .collect::<ExternResult<Vec<MeetingRoom>>>()
+        .collect()
 }
 
 pub fn get_resource_authorities_at_time(
@@ -46,7 +46,7 @@ pub fn get_resource_authorities_at_time(
     _time: timestamp::Timestamp,
 ) -> ExternResult<Vec<AgentPubKey>> {
     let meeting_room = utils::try_get_and_convert::<MeetingRoom>(resource_hash)?;
-    Ok(vec![meeting_room.owner])
+    Ok(vec![meeting_room.1.owner])
 }
 
 /** Private helpers **/

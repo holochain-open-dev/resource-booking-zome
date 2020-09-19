@@ -48,7 +48,7 @@ pub fn create_calendar_event(
     Ok(calendar_event_hash)
 }
 
-pub fn get_all_calendar_events() -> ExternResult<Vec<CalendarEvent>> {
+pub fn get_all_calendar_events() -> ExternResult<Vec<(EntryHash, CalendarEvent)>> {
     let path = Path::from("calendar_events");
 
     let links = get_links!(path.hash()?)?;

@@ -21,7 +21,7 @@ pub fn create_meeting_room(input: CreateMeetingRoomInput) -> ExternResult<EntryH
 }
 
 #[derive(Clone, Serialize, Deserialize, SerializedBytes)]
-pub struct GetAllMeetingRoomsOutput(Vec<MeetingRoom>);
+pub struct GetAllMeetingRoomsOutput(Vec<(EntryHash, MeetingRoom)>);
 #[hdk_extern]
 pub fn get_all_meeting_rooms(_: ()) -> ExternResult<GetAllMeetingRoomsOutput> {
     let meeting_rooms = meeting_room::get_all_meeting_rooms()?;
