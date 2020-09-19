@@ -28,8 +28,12 @@ const allTypeDefs = [
   resourcesTypeDefs,
 ];
 
-async function setupClient(url: String, cellId: CellId) {
+export async function setupClient(url: String) {
   const appWebsocket = await AppWebsocket.connect(String(url));
+
+  const appInfo = await appWebsocket.appInfo({ app_id: 'test-app' });
+
+  const cellId = appInfo.cell_data[0][0];
 
   const executableSchema = makeExecutableSchema({
     typeDefs: allTypeDefs,

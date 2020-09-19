@@ -6,7 +6,7 @@ version = "0.0.1"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
-name = "bookings"
+name = "calendar_events"
 
 [dependencies]
 derive_more = "0"

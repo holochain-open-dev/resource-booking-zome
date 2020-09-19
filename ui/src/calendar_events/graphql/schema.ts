@@ -9,6 +9,7 @@ export const calendarEventsTypeDefs = gql`
 
     type CalendarEvent {
         id: ID!
+        title: String!
         startTime: Date!
         endTime: Date!
         createdBy: ID!

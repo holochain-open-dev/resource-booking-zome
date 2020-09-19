@@ -6,8 +6,11 @@
     "bookings": {
       "wasm_path": "../target/wasm32-unknown-unknown/release/bookings.wasm"
     },
+    "calendar_events": {
+      "wasm_path": "../target/wasm32-unknown-unknown/release/calendar_events.wasm"
+    },
     "meeting_rooms": {
-      "wasm_path": "../target/wasm32-unknown-unknown/release/resources.wasm"
+      "wasm_path": "../target/wasm32-unknown-unknown/release/meeting_rooms.wasm"
     }
   }
 }

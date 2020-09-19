@@ -101,6 +101,28 @@ orchestrator.registerScenario("create and get a meeting room", async (s, t) => {
     meetingRoomHash
   );
   t.equal(bookings.length, 1);
+
+  let calendarEventHash = await conductor.call(
+    "alice",
+    "calendar_events",
+    "create_calendar_event",
+    {
+      title: "Event 1",
+      start_time: [Math.floor(Date.now() / 1000), 0],
+      end_time: [Math.floor(Date.now() / 1000) + 1000, 0],
+      location: meetingRoomHash,
+      invitees: [],
+    }
+  );
+  t.ok(calendarEventHash);
+
+  let calendarEvents = await conductor.call(
+    "alice",
+    "calendar_events",
+    "get_all_calendar_events",
+    null
+  );
+  t.equal(calendarEvents.length, 1);
 });
 
 orchestrator.run();
