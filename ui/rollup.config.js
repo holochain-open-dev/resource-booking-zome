@@ -22,7 +22,11 @@ const baseConfig = createSpaConfig({
 
   // set to true to inject the service worker registration into your index.html
   injectServiceWorker: false,
-  nodeResolve: { browser: true, dedupe: ['lit-html', 'graphql'] },
+  nodeResolve: {
+    browser: true,
+    dedupe: ['lit-html', 'graphql'],
+    preferBuiltins: false,
+  },
 });
 
 export default merge(baseConfig, {
