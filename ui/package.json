@@ -10,7 +10,9 @@
     "storybook": "concurrently --kill-others --names tsc,storybook \"npm run tsc:watch\" \"start-storybook --node-resolve --watch --open\"",
     "storybook:build": "build-storybook",
     "build": "rimraf dist && rollup -c rollup.config.js",
-    "start": "concurrently \"rollup -c rollup.config.js -w\" \"es-dev-server --root-dir dist --app-index index.html --open --compatibility none\""
+    "start": "concurrently \"rollup -c rollup.config.js -w\" \"es-dev-server --root-dir dist --app-index index.html --open --compatibility none\"",
+    "test": "rollup -c rollup.config.js && karma start --coverage",
+    "test:watch": "concurrently --kill-others --names tsc,karma \"rollup -c rollup.config.js -w\" \"karma start --auto-watch=true --single-run=false\""
   },
   "dependencies": {
     "@apollo/client": "^3.2.0",
@@ -45,7 +47,10 @@
     "rollup": "^2.3.4",
     "rollup-plugin-node-builtins": "^2.1.2",
     "tslib": "^1.11.0",
-    "typescript": "~3.9.0"
+    "typescript": "~3.9.0",
+    "@open-wc/testing-karma": "^3.0.0",
+    "deepmerge": "^3.2.0",
+    "@open-wc/testing": "^2.0.0"
   },
   "eslintConfig": {
     "extends": [
