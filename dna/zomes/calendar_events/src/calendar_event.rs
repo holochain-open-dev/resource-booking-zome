@@ -2,6 +2,12 @@ use crate::utils;
 use hdk3::prelude::timestamp::Timestamp;
 use hdk3::prelude::*;
 
+#[derive(Clone, SerializedBytes, Serialize, Deserialize)]
+pub enum EventLocation {
+    Resource(EntryHash),
+    Custom(String),
+}
+
 #[hdk_entry(id = "calendar_event", visibility = "public")]
 #[derive(Clone)]
 pub struct CalendarEvent {
@@ -9,7 +15,7 @@ pub struct CalendarEvent {
     pub title: String,
     pub start_time: Timestamp,
     pub end_time: Timestamp,
-    pub location: Option<EntryHash>,
+    pub location: Option<EventLocation>,
     pub invitees: Vec<AgentPubKey>,
 }
 
@@ -18,7 +24,7 @@ pub struct CreateCalendarEventInput {
     pub title: String,
     pub start_time: Timestamp,
     pub end_time: Timestamp,
-    pub location: Option<EntryHash>,
+    pub location: Option<EventLocation>,
     pub invitees: Vec<AgentPubKey>,
 }
 pub fn create_calendar_event(

@@ -9,6 +9,7 @@ pub struct BookingRequest {
     pub resource_hash: EntryHash,
     pub start_time: Timestamp,
     pub end_time: Timestamp,
+    pub maybe_calendar_event_hash: Option<EntryHash>,
 }
 
 #[derive(Clone, Serialize, Deserialize, SerializedBytes)]
@@ -16,6 +17,7 @@ pub struct RequestToBookResourceInput {
     resource_hash: EntryHash,
     start_time: Timestamp,
     end_time: Timestamp,
+    maybe_calendar_event_hash: Option<EntryHash>,
 }
 pub fn request_to_book_resource(
     request_to_book_resource_input: RequestToBookResourceInput,
@@ -27,6 +29,9 @@ pub fn request_to_book_resource(
         resource_hash: request_to_book_resource_input.resource_hash.clone(),
         start_time: request_to_book_resource_input.start_time.clone(),
         end_time: request_to_book_resource_input.end_time.clone(),
+        maybe_calendar_event_hash: request_to_book_resource_input
+            .maybe_calendar_event_hash
+            .clone(),
     };
 
     create_entry!(booking_request.clone())?;
