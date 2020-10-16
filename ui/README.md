@@ -1,68 +1,119 @@
-# \<hod-resource-bookings>
+# UI Developer Setup
 
-This webcomponent follows the [open-wc](https://github.com/open-wc/open-wc) recommendation.
+UI module for the `calendar-events-zome`.
 
-## Installation
+## Requirements
+
+- Having run through [holochain RSM installation](https://github.com/holochain/holochain-dna-build-tutorial).
+- Having [holochain-run-dna](https://www.npmjs.com/package/@holochain-open-dev/holochain-run-dna) installed.
+
+## Local Demo with `@web/dev-server`
+
+First, [build the holochain dna](/zomes/README.md). Run this from inside the `nix-shell` in which you have the `holochain` binary install.
+
+Run this from inside the `nix-shell` in which you have the `holochain` binary install.
+
 ```bash
-npm i hod-resource-bookings
+npm start
 ```
 
-## Usage
-```html
-<script type="module">
-  import 'hod-resource-bookings/hod-resource-bookings.js';
-</script>
+To run a local development server that serves the basic demo located in `demo/index.html`
+Take into account that this will run the holochain conductor in the background and connect the UI to the actual conductor.
 
-<hod-resource-bookings></hod-resource-bookings>
-```
+## Running only the UI
 
-## Linting with ESLint, Prettier, and Types
-To scan the project for linting errors, run
 ```bash
-npm run lint
+npm run start-ui
 ```
 
-You can lint with ESLint and Prettier individually as well
+## Building
+
 ```bash
-npm run lint:eslint
-```
-```bash
-npm run lint:prettier
+npm run build
 ```
 
-To automatically fix many linting errors, run
+## Testing with Karma
+
+To run the suite of karma tests, run
+
 ```bash
-npm run format
+npm run test
 ```
 
-You can format using ESLint and Prettier individually as well
+To run the tests in watch mode (for <abbr title="test driven development">TDD</abbr>, for example), run
+
 ```bash
-npm run format:eslint
+npm run test-watch
 ```
+
+## E2E tests
+
+First, [build the holochain dna](/zomes/README.md). Run this from inside the `nix-shell` in which you have the `holochain` binary install.
+
 ```bash
-npm run format:prettier
+npm run e2e
 ```
+
+Take into account that this will run the holochain conductor in the background to perform the tests.
 
 ## Demoing with Storybook
+
 To run a local instance of Storybook for your component, run
+
 ```bash
 npm run storybook
 ```
 
 To build a production version of Storybook, run
+
 ```bash
-npm run storybook:build
+npm run build-storybook
 ```
 
+## Linting with ESLint
 
-## Tooling configs
+To scan the project for linting errors, run
 
-For most of the tools, the configuration is in the `package.json` to reduce the amount of files in your project.
-
-If you customize the configuration a lot, you can consider moving them to individual files.
-
-## Local Demo with `es-dev-server`
 ```bash
-npm start
+npm run lint
 ```
-To run a local development server that serves the basic demo located in `demo/index.html`
+
+To automatically fix many linting errors, run
+
+```bash
+npm run format
+```
+
+## Publishing to npm
+
+```bash
+npm run publish-npm
+```
+
+This will build the application, copy the `README.md`, `LICENSE` and `package.json` to the `dist` folder and publish that.
+
+## Publishing storybook documentation to Github Pages
+
+```bash
+npm run publish-storybook
+```
+
+This will build the static storybook site, and deploy it directly in the `gh-pages` of your repository.
+
+After this, it will be accessible in the appropriate Github Pages URL (eg. https://holochain-open-dev.github.io/calendar-events-module).
+
+## Publishing in a branch on this repository
+
+If you don't want to publish to NPM yet, you can "publish" a build of this module with:
+
+```bash
+npm run publish-to-branch
+```
+
+Now, a built version of this module will be at the root of the `ui-build` branch, which other `package.json` files can reference like this:
+
+```json
+  "dependencies": {
+    "@holochain-open-dev/TODO_RENAME_MODULE": "holochain-open-dev/TODO_RENAME_MODULE#ui-build",
+  }
+```

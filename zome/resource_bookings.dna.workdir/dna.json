@@ -1,0 +1,13 @@
+{
+  "name": "resource_bookings",
+  "uuid": "",
+  "properties": null,
+  "zomes": {
+    "resource_bookings": {
+      "wasm_path": "../target/wasm32-unknown-unknown/release/resource_bookings.wasm"
+    },
+    "meeting_rooms": {
+      "wasm_path": "../target/wasm32-unknown-unknown/release/meeting_rooms.wasm"
+    }
+  }
+}

@@ -1,7 +1,7 @@
-  {
+{
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
+    "target": "es2018",
+    "module": "esnext",
     "moduleResolution": "node",
     "noEmitOnError": true,
     "lib": ["es2017", "dom"],
@@ -13,7 +13,8 @@
     "outDir": "dist",
     "sourceMap": true,
     "inlineSources": true,
+    "declaration": true,
     "rootDir": "./src"
   },
-  "include": ["**/*.ts"]
+  "include": ["src/**/*.ts"]
 }
