@@ -31,11 +31,11 @@ These are the things you need to know to decide if you can use this module in yo
 4. Add this zome as a dependency in the `Cargo.toml` file:
 ```toml
 [dependencies]
-todo_rename_zome = {git = "https://github.com/holochain-open-dev/resource-bookings-module", package = "resource_bookings"}
+resource_bookings = {git = "https://github.com/holochain-open-dev/resource-bookings-module", package = "resource_bookings"}
 ```
 5. Create a `src` folder besides the `Cargo.toml` with this content:
 ```rust
-extern crate todo_rename_zome;
+extern crate resource_bookings;
 ```
 6. Add the zome into your `*.dna.workdir/dna.json` file.
 7. Compile the DNA with the usual `CARGO_TARGET=target cargo build --release --target wasm32-unknown-unknown`.
